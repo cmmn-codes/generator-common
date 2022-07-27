@@ -16,6 +16,9 @@ Creates a minimal yarn project with no dependencies or structure
 ### `yo gitignore`
 Adds a standard `.gitignore`
 
+### `yo common:license`
+Add a license to the project - defaults to MIT with option of GNU_GLP
+
 ### `yo common:ts`
 Adds typescript support
 

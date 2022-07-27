@@ -18,8 +18,7 @@ module.exports = class extends Generator {
     });
     this.composeWith([require.resolve('../library')], {
       destinationRoot: this.destinationRoot('common/'),
-      arguments: { packageName: 'common' },
-      private: true,
+      arguments: { packageName: 'common', private: true },
     });
   }
 
