@@ -1,0 +1,55 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": [<%= plugins.map(v => `"${v}"`).join(", "); %>]
+  "extends": [<%= extensions.map(v => `"${v}"`).join(", "); %>]
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "rules": {
+    "prettier/prettier": "error",
+    "eqeqeq": [
+      "error",
+      "always",
+      {
+        "null": "ignore"
+      }
+    ],
+    "no-restricted-properties": [
+      "error",
+      {
+        "object": "it",
+        "property": "skip",
+        "message": "Don't commit skipped tests"
+      },
+      {
+        "object": "it",
+        "property": "only",
+        "message": "Don't commit focused tests"
+      },
+      {
+        "object": "describe",
+        "property": "skip",
+        "message": "Don't commit skipped tests"
+      },
+      {
+        "object": "describe",
+        "property": "only",
+        "message": "Don't commit focused tests"
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.test.ts"
+      ],
+      "extends": [
+        "plugin:jest/recommended"
+      ],
+      "plugins": [
+        "jest"
+      ]
+    }
+  ]
+}
