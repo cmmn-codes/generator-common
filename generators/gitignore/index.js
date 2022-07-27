@@ -5,7 +5,7 @@ module.exports = class extends Generator {
     // Calling the super constructor is important so our generator is correctly set up
     super(args, opts);
   }
-  
+
   writingConfig() {
     this.fs.copyTpl(
       this.templatePath('default.ejs'),

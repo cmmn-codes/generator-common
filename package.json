@@ -4,6 +4,8 @@
   "description": "A yeoman code generator for quickly setting up projects",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint generators/.",
+    "lint:fix": "eslint --fix generators/.",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -11,5 +13,11 @@
   "dependencies": {
     "lodash": "^4.17.21",
     "yeoman-generator": "^5.6.1"
+  },
+  "devDependencies": {
+    "eslint": "8.20.0",
+    "prettier": "2.7.1",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-prettier": "4.2.1"
   }
 }

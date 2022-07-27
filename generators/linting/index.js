@@ -5,49 +5,57 @@ module.exports = class extends Generator {
     // Calling the super constructor is important so our generator is correctly set up
     super(args, opts);
     this.option('react');
-    this.option('jest', {default: false});
-    this.option('typescript', {default: true});
-    this.option('prettier', {default: true});
+    this.option('jest', { default: false });
+    this.option('typescript', { default: true });
+    this.option('prettier', { default: true });
   }
-  
+
   addDependenciesToPackage() {
-    this.log('Adding linting dev dependencies')
+    this.log('Adding linting dev dependencies');
     const packages = ['eslint'];
     if (this.options.prettier) {
-      this.log('  - including prettier')
-      packages.push('prettier', 'eslint-config-prettier', 'eslint-plugin-prettier');
+      this.log('  - including prettier');
+      packages.push(
+        'prettier',
+        'eslint-config-prettier',
+        'eslint-plugin-prettier'
+      );
     }
     if (this.options.typescript) {
-      this.log('  - including typescript')
-      packages.push('@typescript-eslint/eslint-plugin', '@typescript-eslint/parser');
+      this.log('  - including typescript');
+      packages.push(
+        '@typescript-eslint/eslint-plugin',
+        '@typescript-eslint/parser'
+      );
     }
     if (this.options.jest) {
-      this.log('  - including jest')
+      this.log('  - including jest');
       packages.push('eslint-plugin-jest');
     }
     if (this.options.react) {
-      this.log('  - including react')
-      packages.push('eslint-plugin-react')
+      this.log('  - including react');
+      packages.push('eslint-plugin-react');
     }
     return this.addDevDependencies(packages);
   }
-  
+
   writingEslintConfig() {
-    this.log('Generating .eslintrc.json')
+    this.log('Generating .eslintrc.json');
     const plugins = [];
     const extensions = [];
+    let parser;
     if (this.options.typescript) {
-      plugins.push("@typescript-eslint")
-      extensions.push("plugin:@typescript-eslint/recommended")
+      parser = '@typescript-eslint/parser';
+      plugins.push('@typescript-eslint');
+      extensions.push('plugin:@typescript-eslint/recommended');
     }
     if (this.options.prettier) {
       plugins.push('prettier');
-      extensions.push("plugin:prettier/recommended");
-      
+      extensions.push('plugin:prettier/recommended');
     }
     if (this.options.react) {
       plugins.push('react');
-      extensions.push("plugin:react/recommended")
+      extensions.push('plugin:react/recommended');
     }
     if (this.options.prettier) {
       extensions.push('prettier');
@@ -55,18 +63,18 @@ module.exports = class extends Generator {
     this.fs.copyTpl(
       this.templatePath('eslint.json.ejs'),
       this.destinationPath('.eslintrc.json'),
-      {plugins, extensions, jestOverrides: this.options.jest}
+      { plugins, extensions, jestOverrides: this.options.jest, parser }
     );
   }
-  
+
   writingPrettierConfig() {
-    if (!this.options.prettier) return
-    this.log('Generating .prettierrc.json')
+    if (!this.options.prettier) return;
+    this.log('Generating .prettierrc.json');
     const config = {
-      "semi": true,
-      "singleQuote": true
-    }
-    
-    this.fs.extendJSON(this.destinationPath('.prettierrc.json'), config)
+      semi: true,
+      singleQuote: true,
+    };
+
+    this.fs.extendJSON(this.destinationPath('.prettierrc.json'), config);
   }
 };

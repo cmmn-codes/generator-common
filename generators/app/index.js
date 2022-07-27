@@ -1,5 +1,8 @@
 var Generator = require('yeoman-generator');
-require('lodash').extend(Generator.prototype, require('yeoman-generator/lib/actions/install'))
+require('lodash').extend(
+  Generator.prototype,
+  require('yeoman-generator/lib/actions/install')
+);
 
 module.exports = class extends Generator {
   constructor(args, opts) {
@@ -7,45 +10,45 @@ module.exports = class extends Generator {
     super(args, opts);
     this.env.options.nodePackageManager = 'yarn';
     this.argument('packageName', { type: 'string', required: false });
-    this.option('private')
+    this.option('private');
   }
-  
+
   async prompting() {
     if (this.options.packageName) {
-      this.answers = { name: this.options.packageName }
-      return
+      this.answers = { name: this.options.packageName };
+      return;
     }
     const answers = await this.prompt([
       {
-        type: "input",
-        name: "name",
-        message: "Your project name",
-        default: this.appname // Default to current folder name
+        type: 'input',
+        name: 'name',
+        message: 'Your project name',
+        default: this.appname, // Default to current folder name
       },
       {
-        type: "input",
-        name: "description",
-        message: "Your project description",
-        default: "",
-      }
+        type: 'input',
+        name: 'description',
+        message: 'Your project description',
+        default: '',
+      },
     ]);
     this.answers = answers;
   }
-  
+
   writing() {
     this.log('writing default package.json');
     const pkgJson = {
-      "name": this.answers.name,
-      "version": "1.0.0",
-      "description": this.answers.description || '',
-      "main": "index.js",
+      name: this.answers.name,
+      version: '1.0.0',
+      description: this.answers.description || '',
+      main: 'index.js',
       private: !!this.options.private,
       dependencies: {},
       devDependencies: {},
-      "author": "",
-      "license": "MIT",
-    }
-    
+      author: '',
+      license: 'MIT',
+    };
+
     // Extend or create package.json file in destination path
     this.fs.extendJSON(this.destinationPath('package.json'), pkgJson);
   }
