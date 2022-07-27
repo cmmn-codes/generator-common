@@ -34,14 +34,6 @@ module.exports = class extends Generator {
   
   addPackageEntries() {
     this.log('Create source files');
-    const scripts = {
-      build: "tsc",
-      dev: "tsc -w",
-      lint: 'eslint src/.',
-      'lint:fix': 'eslint --fix src/.',
-      'prepublish': 'yarn lint',
-      'preversion': 'yarn lint'
-    }
     this.fs.extendJSON(this.destinationPath('package.json'), {main: './dist/index.js', types: './dist/index.d.ts'});
   }
 };

@@ -6,9 +6,15 @@ module.exports = class extends Generator {
     // Calling the super constructor is important so our generator is correctly set up
     super(args, opts);
     this.env.options.nodePackageManager = 'yarn';
+    this.argument('packageName', { type: 'string', required: false });
+    this.option('private')
   }
   
   async prompting() {
+    if (this.options.packageName) {
+      this.answers = { name: this.options.packageName }
+      return
+    }
     const answers = await this.prompt([
       {
         type: "input",
@@ -31,11 +37,9 @@ module.exports = class extends Generator {
     const pkgJson = {
       "name": this.answers.name,
       "version": "1.0.0",
-      "description": this.answers.description,
+      "description": this.answers.description || '',
       "main": "index.js",
-      "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-      },
+      private: !!this.options.private,
       dependencies: {},
       devDependencies: {},
       "author": "",
