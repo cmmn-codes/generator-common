@@ -27,6 +27,3 @@ yarn-error.log*
 
 # ide
 .idea/
-
-# parcel js cache
-.parcel-cache/
