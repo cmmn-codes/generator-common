@@ -1,7 +1,7 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": [<%= plugins.map(v => `"${v}"`).join(", "); %>]
-  "extends": [<%= extensions.map(v => `"${v}"`).join(", "); %>]
+  "plugins": [<%- plugins.map(v => `"${v}"`).join(", "); %>],
+  "extends": [<%- extensions.map(v => `"${v}"`).join(", "); %>],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module"
@@ -40,7 +40,7 @@
     ]
   },
   "overrides": [
-    {
+    <%- jestOverrides ? ```{
       "files": [
         "**/*.test.ts"
       ],
@@ -50,6 +50,6 @@
       "plugins": [
         "jest"
       ]
-    }
+    }``` : '' %>
   ]
 }

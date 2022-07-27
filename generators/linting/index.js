@@ -34,19 +34,28 @@ module.exports = class extends Generator {
   
   writingEslintConfig() {
     this.log('Generating .eslintrc.json')
-    const plugins = ["@typescript-eslint",
-      "react",
-      "prettier"]
-    const extensions = [
-      "plugin:@typescript-eslint/recommended",
-      "plugin:prettier/recommended",
-      "plugin:react/recommended",
-      "prettier"
-    ]
+    const plugins = [];
+    const extensions = [];
+    if (this.options.typescript) {
+      plugins.push("@typescript-eslint")
+      extensions.push("plugin:@typescript-eslint/recommended")
+    }
+    if (this.options.prettier) {
+      plugins.push('prettier');
+      extensions.push("plugin:prettier/recommended");
+      
+    }
+    if (this.options.react) {
+      plugins.push('react');
+      extensions.push("plugin:react/recommended")
+    }
+    if (this.options.prettier) {
+      extensions.push('prettier');
+    }
     this.fs.copyTpl(
       this.templatePath('eslint.json.ejs'),
       this.destinationPath('.eslintrc.json'),
-      {plugins, extensions}
+      {plugins, extensions, jestOverrides: this.options.jest}
     );
   }
   

@@ -22,6 +22,8 @@ module.exports = class extends Generator {
     super(args, opts);
     this.option('composite');
     this.option('jsx');
+    this.argument('outDir', { type: 'string', default: './dist/'})
+    this.argument('rootDir', { type: 'string', default: './src/'})
   }
   
   async prompting() {
@@ -37,7 +39,7 @@ module.exports = class extends Generator {
     this.answers = answers;
   }
   
-  addTSPackage() {
+  addTsPackage() {
     this.log('Adding typescript dependency');
     const packages = ['typescript'];
     return this.addDevDependencies(packages);
@@ -46,11 +48,14 @@ module.exports = class extends Generator {
   writingConfig() {
     this.log('Generating typescript config file.')
     const config = defaultConfig;
+    config.compilerOptions.rootDir = this.options.rootDir;
+    config.compilerOptions.outDir = this.options.outDir;
     if (this.options.composite) {
       this.log('  - including composite settings')
       config.compilerOptions.composite = true;
       config.compilerOptions.declarations = true;
       config.compilerOptions.declarationMap = true;
+      config.compilerOptions.baseUrl = './';
     }
     if (this.options.jsx) {
       this.log('  - including jsx settings')
