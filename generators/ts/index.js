@@ -49,6 +49,7 @@ module.exports = class extends Generator {
     const config = defaultConfig;
     config.compilerOptions.rootDir = this.options.rootDir;
     config.compilerOptions.outDir = this.options.outDir;
+    config.includes = [this.options.rootDir];
     if (this.options.composite) {
       this.log('  - including composite settings');
       config.compilerOptions.composite = true;
