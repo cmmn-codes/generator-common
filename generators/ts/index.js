@@ -16,6 +16,7 @@ module.exports = class extends Generator {
     // Calling the super constructor is important so our generator is correctly set up
     super(args, opts);
     this.option('composite');
+    this.option('noEmit');
     this.argument('filePostfix', {
       type: 'string',
       required: false,
@@ -60,7 +61,7 @@ module.exports = class extends Generator {
   }
 
   _getTsConfigSettings() {
-    const moduleConfg = moduleSettings[this.options.module];
+    const moduleConfig = moduleSettings[this.options.module];
     return {
       includes: [this.options.rootDir],
       excludes: ['node_modules/**'],
@@ -68,12 +69,13 @@ module.exports = class extends Generator {
       baseUrl: '.',
       rootDir: this.options.rootDir,
       outDir: this.options.outDir,
-      declarations: true,
+      declaration: true,
       composite: !!this.options.composite,
       declarationMap: !!this.options.composite,
       extending: this.options.extends || false,
       target: 'es2016',
-      ...moduleConfg,
+      noEmit: this.options.noEmit || false,
+      ...moduleConfig,
     };
   }
 

@@ -11,6 +11,7 @@ module.exports = class extends Generator {
     this.env.options.nodePackageManager = 'yarn';
     this.argument('packageName', { type: 'string', required: false });
     this.option('private');
+    this.option('module');
   }
 
   async prompting() {
@@ -41,13 +42,13 @@ module.exports = class extends Generator {
       name: this.answers.name,
       version: '1.0.0',
       description: this.answers.description || '',
-      main: 'index.js',
       private: !!this.options.private,
-      dependencies: {},
-      devDependencies: {},
       author: '',
       license: 'MIT',
     };
+    if (this.options.module) {
+      pkgJson.type = 'module';
+    }
 
     // Extend or create package.json file in destination path
     this.fs.extendJSON(this.destinationPath('package.json'), pkgJson);
