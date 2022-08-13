@@ -76,6 +76,17 @@ module.exports = class extends Generator {
       main: 'dist/cjs/index.js',
       module: 'dist/esm/index.js',
       types: 'dist/esm/index.d.ts',
+      engines: {
+        node: '>=16.0',
+      },
+      exports: {
+        './package.json': './package.json',
+        '.': {
+          types: './dist/esm/index.d.ts',
+          import: './dist/esm/index.js',
+          require: './dist/cjs/index.js',
+        },
+      },
     });
   }
 
