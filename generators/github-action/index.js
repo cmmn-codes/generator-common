@@ -2,9 +2,9 @@ var Generator = require('yeoman-generator');
 var _ = require('lodash');
 
 module.exports = class extends Generator {
-  constructor(args, opts) {
+  constructor(args, opts, features) {
     // Calling the super constructor is important so our generator is correctly set up
-    super(args, opts);
+    super(args, opts, features);
   }
 
   async prompting() {

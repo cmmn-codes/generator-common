@@ -1,9 +1,9 @@
 var Generator = require('yeoman-generator');
 
 module.exports = class extends Generator {
-  constructor(args, opts) {
+  constructor(args, opts, features) {
     // Calling the super constructor is important so our generator is correctly set up
-    super(args, opts);
+    super(args, opts, features);
   }
 
   initializing() {
@@ -101,7 +101,7 @@ module.exports = class extends Generator {
   writePostBuildScriptFile() {
     this.log('Create source files');
     this.fs.copyTpl(
-      this.templatePath('post-build.js'),
+      this.templatePath('post-build.js.ejs'),
       this.destinationPath('./scripts/post-build.js')
     );
   }

@@ -1,9 +1,9 @@
 var Generator = require('yeoman-generator');
 
 module.exports = class extends Generator {
-  constructor(args, opts) {
+  constructor(args, opts, features) {
     // Calling the super constructor is important so our generator is correctly set up
-    super(args, opts);
+    super(args, opts, features);
     this.option('react');
     this.option('jest', { default: false });
     this.option('typescript', { default: true });

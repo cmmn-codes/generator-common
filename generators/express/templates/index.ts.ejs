@@ -1,0 +1,49 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+import express, { ErrorRequestHandler } from 'express';
+import helmet from 'helmet';
+import bodyParser from 'body-parser';
+import path from 'path';
+import fs from 'fs';
+
+const PORT = process.env.PORT || 3000;
+
+<% if (staticDir) {%>
+const PUBLIC_DIRECTORY = path.resolve(__dirname, '<%- staticDir %>');
+const INDEX_HTML = path.join(PUBLIC_DIRECTORY, 'index.html');
+<% } %>
+
+const app = express();
+
+app.use(helmet());
+app.use(bodyParser.json());
+
+app.get('/api', (req, res) => {
+  res.json('hello');
+});
+
+<% if (staticDir) {%>
+app.use(express.static(PUBLIC_DIRECTORY));
+app.get('*', (req, res, next) => {
+  res.contentType('text/html');
+  const stream = fs.createReadStream(INDEX_HTML);
+  stream.on('error', next);
+  stream.pipe(res);
+});
+<% } %>
+
+const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
+  console.log(error);
+  if (res.headersSent) {
+    return next(error);
+  }
+  res.status(500);
+  res.send('Opps');
+};
+
+app.use(errorHandler);
+
+app.listen(PORT, () => {
+  console.log(`App started on ${PORT}`);
+});

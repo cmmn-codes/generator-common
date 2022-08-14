@@ -5,11 +5,12 @@ require('lodash').extend(
 );
 
 module.exports = class extends Generator {
-  constructor(args, opts) {
+  constructor(args, opts, features) {
     // Calling the super constructor is important so our generator is correctly set up
-    super(args, opts);
+    super(args, opts, features);
     this.env.options.nodePackageManager = 'yarn';
     this.argument('packageName', { type: 'string', required: false });
+    this.argument('main', { type: 'string', required: false });
     this.option('private');
     this.option('module');
   }
@@ -37,7 +38,8 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    this.log('writing default package.json');
+    this.log(`writing default package.json for ${this.answers.name}`);
+    this.log(`at ${this.destinationPath('package.json')}`);
     const pkgJson = {
       name: this.answers.name,
       version: '1.0.0',
@@ -46,6 +48,9 @@ module.exports = class extends Generator {
       author: '',
       license: 'MIT',
     };
+    if (this.options.main) {
+      pkgJson.main = this.options.main;
+    }
     if (this.options.module) {
       pkgJson.type = 'module';
     }

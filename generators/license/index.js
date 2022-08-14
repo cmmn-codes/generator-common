@@ -4,9 +4,9 @@ const fs = require('fs');
 const validLicenses = fs.readdirSync(path.join(__dirname, 'templates'));
 
 module.exports = class extends Generator {
-  constructor(args, opts) {
+  constructor(args, opts, features) {
     // Calling the super constructor is important so our generator is correctly set up
-    super(args, opts);
+    super(args, opts, features);
     this.argument('flavor', { type: 'string', default: 'MIT' });
     this.argument('copyrightHolder', {
       type: 'string',
@@ -14,7 +14,7 @@ module.exports = class extends Generator {
     });
   }
 
-  writingConfig() {
+  initializing() {
     if (!validLicenses.includes(this.options.flavor)) {
       throw new Error(
         `Template for license does not exist, choose one of ${validLicenses.join(
@@ -22,6 +22,15 @@ module.exports = class extends Generator {
         )}`
       );
     }
+  }
+
+  writingToPackage() {
+    const packagePath = this.destinationRoot('./package.json');
+    if (!this.fs.exists(packagePath)) return;
+    this.fs.extendJSON(packagePath, { license: this.options.license });
+  }
+
+  writingConfig() {
     this.fs.copyTpl(
       this.templatePath(this.options.flavor),
       this.destinationPath('LICENSE'),
