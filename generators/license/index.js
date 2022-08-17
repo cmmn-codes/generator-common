@@ -25,7 +25,7 @@ module.exports = class extends Generator {
   }
 
   writingToPackage() {
-    const packagePath = this.destinationRoot('./package.json');
+    const packagePath = this.destinationPath('./package.json');
     if (!this.fs.exists(packagePath)) return;
     this.fs.extendJSON(packagePath, { license: this.options.license });
   }
@@ -33,7 +33,7 @@ module.exports = class extends Generator {
   writingConfig() {
     this.fs.copyTpl(
       this.templatePath(this.options.flavor),
-      this.destinationPath('LICENSE'),
+      this.destinationPath('./LICENSE'),
       {
         year: new Date().getFullYear(),
         name: this.options.copyrightHolder,
